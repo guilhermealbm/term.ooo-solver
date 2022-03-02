@@ -5,7 +5,6 @@ from itertools import zip_longest
 
 letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 letters_values = []
-df = pd.DataFrame()
 
 def best_initial_words():
     # read json
@@ -40,7 +39,8 @@ def best_initial_words():
     print("Top 5 palavras: ")
     print(df.nlargest(5, 'general_score'))
 
-    receive_status(first_time = True)
+    #receive_status(first_time = True)
+    guess_next_word(df, letters_frequency_exact, letters_frequency_general)
 
 
 def receive_status(first_time = False):
@@ -60,9 +60,25 @@ def receive_status(first_time = False):
     guess_next_word(letters_tuple, status_tuple)
 
 
-def guess_next_word(letters_tuple, status_tuple):
+def guess_next_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple = ('a', 'r', 'e', 'i', 'o'), status_tuple = ('1', '2', '3', '3', '3')):
     print(letters_tuple)
     print(status_tuple)
+    discovered_letters = len([t for t in status_tuple if t != '3'])
+    print(discovered_letters)
+
+    if discovered_letters < 3:
+        print("Continuar explorando")
+        try_new_letters(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple)
+    else:
+        print("Vamos tentar acertar")
+
+
+def try_new_letters(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple):
+    print("try_new_letters")
+
+
+def try_guess_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple):
+    print("try_guess_word")
 
 
 if __name__ == "__main__":
