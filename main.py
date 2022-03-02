@@ -5,6 +5,7 @@ from itertools import zip_longest
 
 letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 letters_values = []
+df = pd.DataFrame()
 
 def best_initial_words():
     # read json
@@ -36,7 +37,32 @@ def best_initial_words():
     df['general_score'] = df.apply(lambda x: (letters_frequency_general[x[0]]) + letters_frequency_general[x[1]] + letters_frequency_general[x[2]] + letters_frequency_general[x[3]] + letters_frequency_general[x[4]], axis = 1)
 
     # print(df.nlargest(5, 'exact_score'))
+    print("Top 5 palavras: ")
     print(df.nlargest(5, 'general_score'))
+
+    receive_status(first_time = True)
+
+
+def receive_status(first_time = False):
+    print("Status: 1 = verde, 2 = amarelo e 3 = vermelho")
+    status1 = ""
+    if (first_time):
+        status1 = input("1a letra e status (ex: a1): ")
+    else:
+        status1 = input("1a letra e status: ")
+    status2 = input("2a letra e status: ")
+    status3 = input("3a letra e status: ")
+    status4 = input("4a letra e status: ")
+    status5 = input("5a letra e status: ")
+
+    letters_tuple = (status1[0], status2[0], status3[0], status4[0], status5[0])
+    status_tuple = (status1[1], status2[1], status3[1], status4[1], status5[1])
+    guess_next_word(letters_tuple, status_tuple)
+
+
+def guess_next_word(letters_tuple, status_tuple):
+    print(letters_tuple)
+    print(status_tuple)
 
 
 if __name__ == "__main__":
