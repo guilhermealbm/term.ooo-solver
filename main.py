@@ -98,13 +98,19 @@ def try_new_letters(df, letters_frequency_exact, letters_frequency_general, lett
 
 
 def try_guess_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple):
+    existing_letters = []
+    for i, attempt in enumerate(letters_tuple):
+        for j, letter in enumerate(attempt):
+            if status_tuple[i][j] != '3':
+                existing_letters.append(letter)
+
     for i, attempt in enumerate(letters_tuple):
         for j, letter in enumerate(attempt):
             if status_tuple[i][j] == '1':
                 df = df[df['word'].str[j] == letter]
             elif status_tuple[i][j] == '2':
                 df = df[~(df['word'].str[j] == letter) & df['word'].str.contains(letter)]
-            else:
+            elif letter not in existing_letters:
                 df = df[~df['word'].str.contains(letter)]
 
     print("Top 5 palavras: ")
