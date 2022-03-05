@@ -1,3 +1,4 @@
+from cgi import test
 import reader
 import pandas as pd
 import numpy as np
@@ -7,7 +8,7 @@ letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
 letters_values = []
 
 
-def best_initial_words():
+def best_initial_words(testing=False):
     # read json
     strings_series = pd.Series(reader.read_json())
 
@@ -42,11 +43,12 @@ def best_initial_words():
     print("Top 5 palavras: ")
     print(df_set.nlargest(5, 'general_score'))
 
-    # receive_status(first_time = True)
-    guess_next_word(df, letters_frequency_exact, letters_frequency_general)
+    if testing:
+        return df, letters_frequency_exact, letters_frequency_general
+    receive_status(df, letters_frequency_exact, letters_frequency_general, first_time = True)
 
 
-def receive_status(first_time = False):
+def receive_status(df, letters_frequency_exact, letters_frequency_general, first_time = False):
     print("Status: 1 = verde, 2 = amarelo e 3 = vermelho")
     status1 = ""
     if first_time:
@@ -60,14 +62,16 @@ def receive_status(first_time = False):
 
     letters_tuple = (status1[0], status2[0], status3[0], status4[0], status5[0])
     status_tuple = (status1[1], status2[1], status3[1], status4[1], status5[1])
-    # guess_next_word(letters_tuple, status_tuple)
+    guess_next_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple)
 
 
-def guess_next_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple=('a', 'r', 'e', 'i', 'o'), 
-                    status_tuple=('1', '1', '1', '3', '3')):
+def guess_next_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, 
+                    status_tuple, testing=False):
     print(letters_tuple)
     print(status_tuple)
-    discovered_letters = len([t for t in status_tuple if t != '3'])
+    discovered_letters = 0
+    for attempt in status_tuple:
+        discovered_letters += len([t for t in attempt if t != '3'])
     print(discovered_letters)
 
     if discovered_letters < 3:
@@ -77,24 +81,31 @@ def guess_next_word(df, letters_frequency_exact, letters_frequency_general, lett
         print("Vamos tentar acertar")
         try_guess_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple)
 
+    if not testing:
+        gameover = input("Acertou? S/n: ")
+        if gameover != 'S':
+            receive_status(df, letters_frequency_exact, letters_frequency_general, first_time = False)
+
 
 def try_new_letters(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple):
-    df_set = df[df['word_set'].map(len) == 5]
-    df_set = df_set[~df_set['word'].str.contains(letters_tuple[0]) & ~df_set['word'].str.contains(letters_tuple[1]) & 
-            ~df_set['word'].str.contains(letters_tuple[2]) & ~df_set['word'].str.contains(letters_tuple[3]) & 
-            ~df_set['word'].str.contains(letters_tuple[4])]
+    for attempt in letters_tuple:
+        df_set = df[df['word_set'].map(len) == 5]
+        df_set = df_set[~df_set['word'].str.contains(attempt[0]) & ~df_set['word'].str.contains(attempt[1]) & 
+                ~df_set['word'].str.contains(attempt[2]) & ~df_set['word'].str.contains(attempt[3]) & 
+                ~df_set['word'].str.contains(attempt[4])]
     print("Top 5 palavras: ")
     print(df_set.nlargest(5, 'general_score'))
 
 
 def try_guess_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple):
-    for i, letter in enumerate(letters_tuple):
-        if status_tuple[i] == '1':
-            df = df[df['word'].str[i] == letter]
-        elif status_tuple[i] == '2':
-            df = df[~df['word'].str[i] == letter & df['word'].str.contains(letter)]
-        else:
-            df = df[~df['word'].str.contains(letter)]
+    for i, attempt in enumerate(letters_tuple):
+        for j, letter in enumerate(attempt):
+            if status_tuple[i][j] == '1':
+                df = df[df['word'].str[j] == letter]
+            elif status_tuple[i][j] == '2':
+                df = df[~(df['word'].str[j] == letter) & df['word'].str.contains(letter)]
+            else:
+                df = df[~df['word'].str.contains(letter)]
 
     print("Top 5 palavras: ")
     print(df.nlargest(5, 'exact_score'))
