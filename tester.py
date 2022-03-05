@@ -38,7 +38,17 @@ def testMarch5():
             letters_tuple=[('a', 'r', 'e', 'i', 'o')], status_tuple=[('2', '2', '3', '2', '3')], testing=True)
         df, letters_frequency_exact, letters_frequency_general = main.best_initial_words(testing=True)
         main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('c', 'a', 'i', 'a', 'r')], status_tuple=[('3', '2', '1', '3', '2')], testing=True)
+            letters_tuple=[('a', 'r', 'e', 'i', 'o'), 
+            ('c', 'a', 'i', 'a', 'r')], 
+            status_tuple=[('2', '2', '3', '2', '3'), 
+            ('3', '2', '1', '3', '2')], testing=True)
+        main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
+            letters_tuple=[('a', 'r', 'e', 'i', 'o'), 
+            ('c', 'a', 'i', 'a', 'r'),
+            ('r', 'u', 'i', 'n', 'a')], 
+            status_tuple=[('2', '2', '3', '2', '3'), 
+            ('3', '2', '1', '3', '2'),
+            ('1', '1', '1', '3', '1')], testing=True)
 
 if __name__ == "__main__":
     #testMarch2()
