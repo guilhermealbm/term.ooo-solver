@@ -45,50 +45,37 @@ def best_initial_words(testing=False):
 
     if testing:
         return df, letters_frequency_exact, letters_frequency_general
-    receive_status(df, letters_frequency_exact, letters_frequency_general, first_time = True)
+    receive_status(df, letters_frequency_exact, letters_frequency_general)
 
 
-def receive_status(df, letters_frequency_exact, letters_frequency_general, first_time = False):
+def receive_status(df, letters_frequency_exact, letters_frequency_general):
     print("Status: 1 = verde, 2 = amarelo e 3 = vermelho")
-    status1 = ""
-    if first_time:
-        status1 = input("1a letra e status (ex: a1): ")
-    else:
-        status1 = input("1a letra e status: ")
-    status2 = input("2a letra e status: ")
-    status3 = input("3a letra e status: ")
-    status4 = input("4a letra e status: ")
-    status5 = input("5a letra e status: ")
-
-    letters_tuple = (status1[0], status2[0], status3[0], status4[0], status5[0])
-    status_tuple = (status1[1], status2[1], status3[1], status4[1], status5[1])
-    guess_next_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple)
+    word = input("Entre com a palavra (ex: areio): ")
+    status = input("Entre com o feedback (ex: 13212): ")
+    guess_next_word(df, letters_frequency_exact, letters_frequency_general, word, status)
 
 
-def guess_next_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, 
-                    status_tuple, testing=False):
-    print(letters_tuple)
-    print(status_tuple)
+def guess_next_word(df, letters_frequency_exact, letters_frequency_general, words, status, testing=False):
     discovered_letters = 0
-    for attempt in status_tuple:
+    for attempt in status:
         discovered_letters += len([t for t in attempt if t != '3'])
     print(discovered_letters)
 
     if discovered_letters < 3:
         print("Continuar explorando")
-        try_new_letters(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple)
+        try_new_letters(df, letters_frequency_exact, letters_frequency_general, words, status)
     else:
         print("Vamos tentar acertar")
-        try_guess_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple)
+        try_guess_word(df, letters_frequency_exact, letters_frequency_general, words, status)
 
     if not testing:
         gameover = input("Acertou? S/n: ")
         if gameover != 'S':
-            receive_status(df, letters_frequency_exact, letters_frequency_general, first_time = False)
+            receive_status(df, letters_frequency_exact, letters_frequency_general)
 
 
-def try_new_letters(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple):
-    for attempt in letters_tuple:
+def try_new_letters(df, letters_frequency_exact, letters_frequency_general, words, status):
+    for attempt in words:
         df_set = df[df['word_set'].map(len) == 5]
         df_set = df_set[~df_set['word'].str.contains(attempt[0]) & ~df_set['word'].str.contains(attempt[1]) & 
                 ~df_set['word'].str.contains(attempt[2]) & ~df_set['word'].str.contains(attempt[3]) & 
@@ -97,7 +84,7 @@ def try_new_letters(df, letters_frequency_exact, letters_frequency_general, lett
     print(df_set.nlargest(5, 'general_score'))
 
 
-def try_guess_word(df, letters_frequency_exact, letters_frequency_general, letters_tuple, status_tuple):
+def try_guess_word(df, letters_frequency_exact, letters_frequency_general, words, status):
     existing_letters = []
     for i, attempt in enumerate(letters_tuple):
         for j, letter in enumerate(attempt):
