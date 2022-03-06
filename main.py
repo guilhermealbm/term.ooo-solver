@@ -48,11 +48,13 @@ def best_initial_words(testing=False):
     receive_status(df, letters_frequency_exact, letters_frequency_general)
 
 
-def receive_status(df, letters_frequency_exact, letters_frequency_general):
+def receive_status(df, letters_frequency_exact, letters_frequency_general, words=[], status=[]):
     print("Status: 1 = verde, 2 = amarelo e 3 = vermelho")
     word = input("Entre com a palavra (ex: areio): ")
-    status = input("Entre com o feedback (ex: 13212): ")
-    guess_next_word(df, letters_frequency_exact, letters_frequency_general, word, status)
+    status_ = input("Entre com o feedback (ex: 13212): ")
+    words.append(word)
+    status.append(status_)
+    guess_next_word(df, letters_frequency_exact, letters_frequency_general, words, status)
 
 
 def guess_next_word(df, letters_frequency_exact, letters_frequency_general, words, status, testing=False):
@@ -71,7 +73,7 @@ def guess_next_word(df, letters_frequency_exact, letters_frequency_general, word
     if not testing:
         gameover = input("Acertou? S/n: ")
         if gameover != 'S':
-            receive_status(df, letters_frequency_exact, letters_frequency_general)
+            receive_status(df, letters_frequency_exact, letters_frequency_general, words, status)
 
 
 def try_new_letters(df, letters_frequency_exact, letters_frequency_general, words, status):
@@ -86,16 +88,16 @@ def try_new_letters(df, letters_frequency_exact, letters_frequency_general, word
 
 def try_guess_word(df, letters_frequency_exact, letters_frequency_general, words, status):
     existing_letters = []
-    for i, attempt in enumerate(letters_tuple):
+    for i, attempt in enumerate(words):
         for j, letter in enumerate(attempt):
-            if status_tuple[i][j] != '3':
+            if status[i][j] != '3':
                 existing_letters.append(letter)
 
-    for i, attempt in enumerate(letters_tuple):
+    for i, attempt in enumerate(words):
         for j, letter in enumerate(attempt):
-            if status_tuple[i][j] == '1':
+            if status[i][j] == '1':
                 df = df[df['word'].str[j] == letter]
-            elif status_tuple[i][j] == '2':
+            elif status[i][j] == '2':
                 df = df[~(df['word'].str[j] == letter) & df['word'].str.contains(letter)]
             elif letter not in existing_letters:
                 df = df[~df['word'].str.contains(letter)]
