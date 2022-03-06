@@ -50,8 +50,12 @@ def testMarch5():
             '32132',
             '11131'], testing=True)
 
+def testMarch6():
+        df, letters_frequency_exact, letters_frequency_general = main.best_initial_words(testing=True)
+        main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
+            words=['areio'], status=['23313'], testing=True)
+        main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
+            words=['areio', 'shunt'], status=['23313', '33233'], testing=True)
+
 if __name__ == "__main__":
-    #testMarch2()
-    #testMarch3()
-    #testMarch4()
-    testMarch5()
+    testMarch6()
