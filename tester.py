@@ -4,51 +4,51 @@ import main
 def testMarch2():
     df, letters_frequency_exact, letters_frequency_general = main.best_initial_words(testing=True)
     main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('a', 'r', 'e', 'i', 'o')], status_tuple=[('1', '1', '1', '3', '3')], testing=True)
+            words=['areio'], status=['11133'], testing=True)
 
 
 def testMarch3():
     df, letters_frequency_exact, letters_frequency_general = main.best_initial_words(testing=True)
     main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('a', 'r', 'e', 'i', 'o')], status_tuple=[('3', '3', '3', '3', '1')], testing=True)
+            words=['areio'], status=['33331'], testing=True)
     main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('a', 'r', 'e', 'i', 'o'), ('s', 'h', 'u', 'n', 't')], 
-            status_tuple=[('3', '3', '3', '3', '1'), ('2', '3', '2', '3', '2')], testing=True)
+            words=['areio', 'shunt'], 
+            status=['33331', '23232'], testing=True)
     main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('a', 'r', 'e', 'i', 'o'), ('s', 'h', 'u', 'n', 't'), ('c', 'u', 's', 't', 'o')], 
-            status_tuple=[('3', '3', '3', '3', '1'), ('2', '3', '2', '3', '2'), ('3', '1', '1', '1', '1')], testing=True)
+            words=['areio', 'shunt', 'custo'], 
+            status=['33331', '23232', '31111'], testing=True)
     main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('a', 'r', 'e', 'i', 'o'), 
-                ('s', 'h', 'u', 'n', 't'), 
-                ('c', 'u', 's', 't', 'o'),
-                ('b', 'u', 's', 't', 'o'),], 
-            status_tuple=[('3', '3', '3', '3', '1'), 
-                ('2', '3', '2', '3', '2'), 
-                ('3', '1', '1', '1', '1'),
-                ('3', '1', '1', '1', '1')], testing=True)
+            words=['areio', 
+                'shunt', 
+                'custo',
+                'busto'], 
+            status=['33331', 
+                '23232', 
+                '31111',
+                '31111'], testing=True)
 
 def testMarch4():
         df, letters_frequency_exact, letters_frequency_general = main.best_initial_words(testing=True)
         main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('a', 'r', 'e', 'i', 'o')], status_tuple=[('1', '1', '3', '2', '1')], testing=True)
+            words=['areio'], status=['11321'], testing=True)
 
 def testMarch5():
         df, letters_frequency_exact, letters_frequency_general = main.best_initial_words(testing=True)
         main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('a', 'r', 'e', 'i', 'o')], status_tuple=[('2', '2', '3', '2', '3')], testing=True)
+            words=['areio'], status=['22323'], testing=True)
         df, letters_frequency_exact, letters_frequency_general = main.best_initial_words(testing=True)
         main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('a', 'r', 'e', 'i', 'o'), 
-            ('c', 'a', 'i', 'a', 'r')], 
-            status_tuple=[('2', '2', '3', '2', '3'), 
-            ('3', '2', '1', '3', '2')], testing=True)
+            words=['areio', 
+            'caiar'], 
+            status=['22323', 
+            '32132'], testing=True)
         main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
-            letters_tuple=[('a', 'r', 'e', 'i', 'o'), 
-            ('c', 'a', 'i', 'a', 'r'),
-            ('r', 'u', 'i', 'n', 'a')], 
-            status_tuple=[('2', '2', '3', '2', '3'), 
-            ('3', '2', '1', '3', '2'),
-            ('1', '1', '1', '3', '1')], testing=True)
+            words=['areio', 
+            'caiar',
+            'ruina'], 
+            status=['22323', 
+            '32132',
+            '11131'], testing=True)
 
 if __name__ == "__main__":
     #testMarch2()
