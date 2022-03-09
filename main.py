@@ -77,8 +77,8 @@ def guess_next_word(df, letters_frequency_exact, letters_frequency_general, word
 
 
 def try_new_letters(df, letters_frequency_exact, letters_frequency_general, words, status):
+    df_set = df[df['word_set'].map(len) == 5]
     for attempt in words:
-        df_set = df[df['word_set'].map(len) == 5]
         df_set = df_set[~df_set['word'].str.contains(attempt[0]) & ~df_set['word'].str.contains(attempt[1]) & 
                 ~df_set['word'].str.contains(attempt[2]) & ~df_set['word'].str.contains(attempt[3]) & 
                 ~df_set['word'].str.contains(attempt[4])]

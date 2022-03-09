@@ -57,5 +57,17 @@ def testMarch6():
         main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
             words=['areio', 'shunt'], status=['23313', '33233'], testing=True)
 
+
+def testMarch8():
+        df, letters_frequency_exact, letters_frequency_general = main.best_initial_words(testing=True)
+        main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
+            words=['areio'], status=['23333'], testing=True)
+        main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
+            words=['areio', 'shunt'], status=['23333', '33233'], testing=True)
+        main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
+            words=['areio', 'shunt', 'camua'], status=['23333', '33233', '33321'], testing=True)
+        main.guess_next_word(df, letters_frequency_exact, letters_frequency_general, 
+            words=['areio', 'shunt', 'camua', 'pulga'], status=['23333', '33233', '33321', '21231'], testing=True)
+
 if __name__ == "__main__":
-    testMarch6()
+    testMarch8()
